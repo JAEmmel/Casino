@@ -1,0 +1,23 @@
+///////
+//
+//	Program name: Virtual Casino
+//	Description: 
+//
+//	Created by: 
+///////
+
+#include "pch.h"
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+    cout << "Hello World!\n"; 
+
+	system("pause");
+}
+
+void Slots()
+void Poker()
+void TwentyOne()
