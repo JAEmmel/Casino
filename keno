@@ -1,1 +1,46 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+#include <ctime>
 
+using namespace std;
+
+void pickNumbers(int num);
+int getBet();
+void showBoard(int bet);
+
+int main()
+{
+  cout << "Enter how many numbers to be picked";
+  cin >> diff;
+  pickNumbers(diff);
+  int bet = getBet();
+  showBoard(bet);
+}
+
+void pickNumbers(int num){
+  srand(time(t));
+  vector<int> chosenNum;
+  for(int i = 0; i < num; i++)
+    chosenNum.pushback(rand() % 100);
+}
+
+int getBet(){
+  char ch;
+  cin >> ch;
+  while(isdigit(ch) == false || ch < 48){
+    cout << "Please enter a number positive whole number greater thatn 1";
+    cin >> ch;
+  }
+  cin.putback(ch);
+	int bet;
+	cin >> bet;
+  return bet;
+  }
+
+void showBoard(int bet){
+  for(int i = 0; i < 11; i++)
+    for(int o = i; i < 11 * i; o++)
+     cout << o << " ";
+   
+}
