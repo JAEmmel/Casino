@@ -1,3 +1,4 @@
+#include "pch.h"
 #include <iostream>
 #include <iomanip>
 #include <vector>
@@ -5,42 +6,91 @@
 
 using namespace std;
 
-void pickNumbers(int num);
+double pickNumbers(int, double);
 int getBet();
-void showBoard(int bet);
+void showBoard();
+
+int bank = 50;
 
 int main()
 {
-  cout << "Enter how many numbers to be picked";
-  cin >> diff;
-  pickNumbers(diff);
-  int bet = getBet();
-  showBoard(bet);
+	int diff = 0;
+	cout << "Enter how many numbers to be picked ";
+	cin >> diff;
+	int bet = getBet();
+	showBoard();
+	int money = pickNumbers(diff, bet);
+	if (money > 0)
+		cout << "\nYou earned $" << money;
+	if (money < 0)
+		cout << "\nYou lost $" << money;
+	system("pause");
 }
 
-void pickNumbers(int num){
-  srand(time(t));
-  vector<int> chosenNum;
-  for(int i = 0; i < num; i++)
-    chosenNum.pushback(rand() % 100);
+double pickNumbers(int num, double bet) {
+	
+	
+	
+	cout << "Pick your " << num << " numbers to play: ";
+
+	vector<int> playerChoice;
+	for (int i = 0; i < num; i++) {
+		char ch;
+		cin >> ch;
+		while (isdigit(ch) == false) {
+			cout << "Please enter a number between 0 and 100";
+			cin >> ch;
+		}
+		cin.putback(ch);
+		int choice;
+		cin >> choice;
+		playerChoice.push_back(choice);
+	}
+
+	srand(time(0));
+
+	vector<int> chosenNum;
+	cout << "The chosen Numbers are:\n";
+	for (int i = 0; i < num; i++) {
+		int x = rand() % 100;
+		cout << x << "\t";
+		chosenNum.push_back(x);
+	}
+	int counter = 0;
+	for (int y : playerChoice) {
+		for (int x : chosenNum) {
+			if (x == y)
+				counter++;
+		}
+	}
+
+	int payout = 1;
+	for (int i = 0; i < counter; i++)
+		payout *= bet;
+	bank += payout;
+	return payout;
 }
 
-int getBet(){
-  char ch;
-  cin >> ch;
-  while(isdigit(ch) == false || ch < 48){
-    cout << "Please enter a number positive whole number greater thatn 1";
-    cin >> ch;
-  }
-  cin.putback(ch);
+int getBet() {
+	cout << "Enter your bet: ";
+	char ch;
+	cin >> ch;
+	while (isdigit(ch) == false || ch < 48) {
+		cout << "Please enter a number positive whole number greater than 1";
+		cin >> ch;
+	}
+	cin.putback(ch);
 	int bet;
 	cin >> bet;
-  return bet;
-  }
+	bank -= bet;
+	return bet;
+}
 
-void showBoard(int bet){
-  for(int i = 0; i < 11; i++)
-    for(int o = i; i < 11 * i; o++)
-     cout << o << " ";
-   
+void showBoard() {
+	for (int i = 1; i < 101; i++) {
+		cout << i << "\t";
+		if (i % 10 == 0)
+			cout << endl;
+	}
+
 }
