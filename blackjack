@@ -1,1 +1,330 @@
+﻿#include "pch.h"
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <iomanip>
+#include <ctime>
+#include <vector>
+using namespace std;
+struct Card
+{
+    string suit;
+    string face;
+    int facevalue;
+    string status;
+
+}Deck[53];
+
+void BlackJack();
+void createdeck();
+void printdeck();
+void shuffledeck();
+void rungame();
+void dealcard(vector <Card> &hand);
+int betAmount(int & tot);
+void printPhand(vector<Card>hand);
+void printDhand(vector<Card>hand);
+int handtotal(vector<Card>hand);
+void win(int &tot, int&bt, int od);
+void Pbust(vector<Card>hand, int bet, int &hit);
+void Dbust(vector<Card>hand, int bet);
+void lose(int & tot, int & bt);
+void printcard(vector<Card>hand);
+int bank = 100;
+int const ODDS = 1;
+int main()
+{
+    int bank = 100;
+    srand((unsigned)time(0));
+    createdeck();
+    
+
+    BlackJack();
+
+}
+
+void BlackJack()
+{
+    int play;
+    cout << "Welcome to Black Jack\nWould you like to play?\n (Yes = 1 N = 0)\n";
+    cin >> play;
+    if (play == 1 && bank > 0)
+    {
+        shuffledeck();
+        rungame();
+    }
+    else if (play == 0)
+    {
+        exit(1);
+    }
+
+
+}
+
+void rungame()
+{
+    vector<Card>Dhand;
+    vector<Card>Phand;
+    vector<Card>softDhand;
+    vector<Card>softPhand;
+    int hit;
+    int bet;
+    while (bank >= 0) {
+
+        bet = betAmount(bank);
+        dealcard(Phand);
+        dealcard(Phand);
+        dealcard(Dhand);
+        printPhand(Phand);
+        printDhand(Dhand);
+        dealcard(Dhand);
+        if (handtotal(Dhand) == 21)
+        {
+            cout << "Dealer has 21. You lose";
+            lose(bank, bet);
+            break;
+            
+        }
+        else if (handtotal(Phand) == 21)
+        {
+            
+            win(bank, bet, ODDS);
+            break;
+        }
+        cout << "Would you like to hit?\n(0= NO 1 = Yes)\n";
+        cin >> hit;
+        while (hit == 1)
+        {
+            dealcard(Phand);
+            printPhand(Phand);
+            Pbust(Phand, bet, hit);
+            if(hit==0)
+            {
+                break;
+            }
+            cout << "Would you like to hit?\n(0= NO 1 = Yes)";
+            cin >> hit;
+        }
+        if (hit == 0)
+        {
+            
+            while (handtotal(Dhand) < 17)
+            {
+                dealcard(Dhand);
+            }
+            printDhand(Dhand);
+            Dbust(Dhand, bet);
+
+        }
+        if (handtotal(Dhand) == 21 && handtotal(Phand) == 21)
+        {
+            cout << "Dealer has 21. Dealer wins a push. You lose\n";
+            lose(bank, bet);
+            
+        }
+        else if (handtotal(Dhand) == 21)
+        {
+            cout << "Dealer has 21. You lose\n";
+            lose(bank, bet);
+            
+        }
+        else if (handtotal(Phand) == 21)
+        {
+            win(bank, bet, ODDS);
+        }
+        else if (Phand.size() >= 5 && handtotal(Phand) < 22)
+        {
+            win(bank, bet, ODDS);
+        }
+        else if (handtotal(Dhand) > handtotal(Phand) && handtotal(Phand) < 22 && handtotal(Dhand) < 22)
+        {
+            cout << "Dealer is closer to 21. You lose\n";
+            lose(bank, bet);
+            
+        }
+        else if (handtotal(Dhand) < handtotal(Phand) && handtotal(Phand) < 22 && handtotal(Dhand) < 22)
+        {
+            win(bank, bet, ODDS);
+        }
+        else if (handtotal(Dhand) == handtotal(Phand) && handtotal(Phand) < 22 && handtotal(Dhand) < 22)
+        {
+            cout << "You have the same number. Dealer wins a Push\n";
+            lose(bank, bet);
+        }
+        Phand.clear();
+        Dhand.clear();
+        shuffledeck();
+        
+        system("pause");
+    }
+    system("pause");
+}
+
+void createdeck()
+{
+    string faces[13] = { "Ace", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Jack", "Queen", "King" };
+    string suits[4] = { "Diamonds", "Clubs", "Hearts", "Spades" };
+    string status[2] = { "In play","In Deck" };
+    int facevalue[13] = { 11,2,3,4,5,6,7,8,9,10,10,10,10 };
+    int newsuit = 0;
+    for (int x = 0; x < 52; x++)
+    {
+
+        Deck[x].face = faces[x % 13];
+        Deck[x].suit = suits[newsuit];
+        Deck[x].facevalue = facevalue[x % 13];
+        Deck[x].status = status[1];
+        if ((x + 1) % 13 == 0)
+            newsuit++;
+    }
+}
+
+
+void printdeck()
+{
+    for (int x = 0; x < 52; x++)
+    {
+        cout << Deck[x].face << "  of " << Deck[x].suit << " has a value of " << Deck[x].facevalue << " and is " << Deck[x].status << endl;
+    }
+}
+
+
+void shuffledeck()
+{
+
+
+    string status[2] = { "In play","In Deck" };
+    for (int x = 0; x < 100; x++)
+    {
+        int a = rand() % 51;
+        int b = rand() % 51;
+        Deck[52].face = Deck[a].face;
+        Deck[52].suit = Deck[a].suit;
+        Deck[52].facevalue = Deck[a].facevalue;
+        Deck[52].status = status[1];
+
+        Deck[a].face = Deck[b].face;
+        Deck[a].suit = Deck[b].suit;
+        Deck[a].facevalue = Deck[b].facevalue;
+        Deck[a].status = status[1];
+
+        Deck[b].face = Deck[52].face;
+        Deck[b].suit = Deck[52].suit;
+        Deck[b].facevalue = Deck[52].facevalue;
+        Deck[b].status = status[1];
+
+    }
+
+    cout << "\nThe deck has been shuffled\n";
+}
+
+void dealcard(vector <Card> &hand)
+{
+
+    int x = rand() % 52;
+    string status[2] = { "In play","In Deck" };
+    if (Deck[x].status == status[1])
+    {
+        hand.push_back(Deck[x]);
+        Deck[x].status = status[0];
+    }
+    else if (Deck[x].status == status[0])
+    {
+        x = rand() % 52;
+    }
+}
+
+int betAmount(int & tot)
+{
+    int amount = 0;
+    cout << "You have $" << tot << " how much would you like to bet?\n";
+
+    cin >> amount;
+    while (amount > tot)
+    {
+        cout << "Sorry, you dont have that much money on hand.\n";
+        cout << "You have $" << tot << " how much would you like to bet?\n";
+        cin >> amount;
+    }
+
+    return amount;
+}
+
+void printPhand(vector<Card>hand)
+{
+    for (int a = 0; a < hand.size(); a++)
+    {
+        cout << "you have been delt " << hand[a].face << " of " << hand[a].suit << " has a value of " << hand[a].facevalue << endl;
+    }
+}
+
+void printDhand(vector<Card>hand)
+{
+    for (int a = 0; a < hand.size(); a++)
+    {
+        cout << "The dealer is showing " << hand[a].face << " of " << hand[a].suit << " has a value of " << hand[a].facevalue << endl;
+    }
+}
+
+int handtotal(vector<Card>hand)
+{
+    int total = 0;
+    for (int x = 0; x < hand.size(); x++)
+    {
+        total += hand[x].facevalue;
+    }
+    return(total);
+}
+
+void win(int &tot, int&bt, int od)
+{
+    cout << "Congratulations you win!\n";
+    tot = tot + bt * od;
+    cout << "You now have $" << tot << " in your pocket.\n";
+}
+
+void lose(int & tot, int & bt)
+{
+    cout << "Dang you lost..\n";
+    tot = tot - bt;
+    cout << "You now have $" << tot << " in your pocket.\n";
+}
+
+void Pbust(vector<Card>hand,int bet, int &hit)
+{
+    if (handtotal(hand) > 21)
+    {
+        cout << "You busted\n";
+        lose(bank, bet);
+        hit = 0;    
+        return;
+    }
+}
+
+void Dbust(vector<Card>hand, int bet)
+{
+    if (handtotal(hand) > 21)
+    {
+        cout << "Dealer busted\n";
+        win(bank, bet, ODDS);
+        return;
+    }
+}
+
+void printcard(vector<Card>hand)
+{
+    int b;
+    for(b = 0 ; b < hand.size() ; b++)
+    cout << "----------" << endl;
+    cout << "|" << hand[b].suit << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << "|" << endl;
+    cout << "|" << setw(9) << hand[b].face<<"|" << endl;
+    cout << "----------" << endl;
+}
 
