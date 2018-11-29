@@ -162,16 +162,12 @@ void spinWheel(int diff, int loop)
 				bank += payout;
 				cout << "\n\tYou matched 1 pair. You earned $" << payout << "! You now have $" << bank;
 				break;
-			default:
-				cout << "\n\tYou matched no pairs and lost your bet.";
-				payout = cashVals[diff - 1] * -1;
-				bank += payout;
-				cout << " You now have $" << bank << endl;
-				break;
 			}
 		}
-		if (bank <= 0)
+		if (bank <= 0) {
+			cout << "\n\t\tYou ran out of money.";
 			break;
+		}
 	}
 }
 
