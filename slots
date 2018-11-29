@@ -8,6 +8,7 @@
 int getBet();
 void spinWheel(int diff, int loop);
 void playSlots();
+int getUserInput();
 
 using namespace std;
 
@@ -35,17 +36,16 @@ int getBet()
 
 {
 	cout << "Choose bet ammount:\n1  :  $0.01\n2  :  $0.05\n3  :  $0.10\n4  :  $0.25\n5  :  $0.50\n6  :  $1.00\n";
-	char ch;
-	cin >> ch;
-	while (isdigit(ch) == false || ch > 54)
-	{
-		cout << "please enter a number that matches 1 - 6";
-		cin >> ch;
+	
+	while (1 < 2) {
+		int bet = getUserInput();
+		if (bet < 1 || bet > 6) {
+			cout << "\nPlease enter a number shown above.\n";
+			continue;
+		}
+		return bet;
 	}
-	cin.putback(ch);
-	int bet;
-	cin >> bet;
-	return bet;
+	
 }
 
 void spinWheel(int diff, int loop)
@@ -197,4 +197,17 @@ void spinWheel(int diff, int loop)
 
 	}
 
+}
+
+int getUserInput() {
+	char ch;
+	cin >> ch;
+	while (isdigit(ch) == false) {
+		cout << "Please enter a number.";
+		cin >> ch;
+	}
+	cin.putback(ch);
+	int choice;
+	cin >> choice;
+	return choice;
 }
