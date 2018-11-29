@@ -3,21 +3,63 @@
 //	Program name: Virtual Casino
 //	Description: 
 //
-//	Created by: 
+//	Created by: Steven Fordham, Tyler Humphrey and Josh Emmel
 ///////
 
 #include "pch.h"
 #include <iostream>
 
+void Slots();
+void Keno();
+void Blackjack();
+void Roulette();
+int getUserInput();
+
 using namespace std;
 
 int main()
 {
-    cout << "Hello World!\n"; 
-
+	int bank = 50;
+	int response = 1;
+	while(response > 1){ 
+		cout << "Welcome to the World-Famous Virtual-Casino!\nWhat Game would you like to play?\n\n[1] BlackJack\n[2] Roulette\n[3] Slots\n[4] Keno\n[Anything else] Exit";
+	
+		response = getUserInput();
+	
+		switch(response){
+			case 1:
+				Blackjack();
+				break;
+			case 2:
+				Roulette();
+				break;
+			case 3:
+				Slots();
+				break;
+			case 4:
+				Keno();
+				break;
+		}
+	}
+	if(bank > 50)
 	system("pause");
 }
 
 void Slots()
-void Poker()
-void TwentyOne()
+void Keno()
+void Blackjack()
+void Roulette()
+
+int getUserInput() {
+	char ch;
+	cin >> ch;
+	while (isdigit(ch) == false) {
+		cout << "Please enter a number.";
+		cin >> ch;
+	}
+	cin.putback(ch);
+	int choice;
+	cin >> choice;
+	return choice;
+}
+
