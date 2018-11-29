@@ -25,47 +25,43 @@ void playSlots() {
 	srand(time(0));
 	int bet = getBet();
 	spinWheel(bet, 1);
-	cout << "\n\t\tYou now have $" << bank;
+	cout << "\n\t\t  You now have $" << bank;
 	if (cash < bank)
-		cout << " You earned $" << setprecision(4) << bank - cash << "!\n";
+		cout << " You earned $" << setprecision(4) << bank - cash << "!\n\n\n\n";
 	else
-		cout << " You lost $" << setprecision(4) << cash - bank << ".\n";
+		cout << " You lost $" << setprecision(4) << cash - bank << ".\n\n\n\n";
 }
 
 int getBet()
 
 {
-	cout << "Choose bet ammount:\n1  :  $0.01\n2  :  $0.05\n3  :  $0.10\n4  :  $0.25\n5  :  $0.50\n6  :  $1.00\n";
-	
 	while (1 < 2) {
+		cout << "Choose bet ammount:\n1  :  $0.01\n2  :  $0.05\n3  :  $0.10\n4  :  $0.25\n5  :  $0.50\n6  :  $1.00\n7  :  $5.00\n8  :  $10\n9  :  $100\n10 :  $200\n";
 		int bet = getUserInput();
-		if (bet < 1 || bet > 6) {
-			cout << "\nPlease enter a number shown above.\n";
+		if (bet < 1 || bet > 10) {
+			cout << "\nPlease enter a number shown above.\n\n\n";
+			continue;
+		}
+		vector<double> cashVals = { 0.01, 0.05, 0.1, 0.25, 0.5, 1, 5, 10, 100, 200 };
+		if (cashVals[bet - 1] > bank)
+		{
+			cout << "\n You bet more money than you have. Please try again.\n\n\n";
 			continue;
 		}
 		return bet;
 	}
-	
+
 }
 
 void spinWheel(int diff, int loop)
-
 {
 	int winCounter = 1;
 	int difficulty = diff;
-	vector<double> cashVals = { 0.01, 0.05, 0.1, 0.25, 0.5, 1 };
+	vector<double> cashVals = { 0.01, 0.05, 0.1, 0.25, 0.5, 1, 5, 10, 100, 200 };
 
 	while (loop == 1) {
 		cout << "\n\n\t\t\tPress 1 to spin.\n\t\t  Press any other key to exit. ";
-		char ch;
-		cin >> ch;
-		while (isdigit(ch) == false)
-		{
-			break;
-		}
-		cin.putback(ch);
-		int loop;
-		cin >> loop;
+		getUserInput();
 		if (loop != 1)
 			break;
 
@@ -79,125 +75,106 @@ void spinWheel(int diff, int loop)
 		cout << "\t\t" << static_cast<char>(spin1) << '\t' << static_cast<char>(spin2) << '\t' << static_cast<char>(spin3) << '\t' << static_cast<char>(spin4) << '\t' << static_cast<char>(spin5) << endl << endl;
 		cout << "\t\t" << static_cast<char>(spin1 - 1) << '\t' << static_cast<char>(spin2 - 1) << '\t' << static_cast<char>(spin3 - 1) << '\t' << static_cast<char>(spin4 - 1) << '\t' << static_cast<char>(spin5 - 1) << endl << endl;
 
-		double cashAdded = 0;
-
-		int win = 0;
+		vector<int> win;
 
 		if (spin1 == spin2 && spin2 == spin3 && spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 81;
-			bank += cashAdded;
-			cout << "\t\t\tJackpot!\n You matched 4 pairs! You earned $" << setprecision(2) << cashAdded << "!";
-			cout << "\t\t\t\t\tYou now have $" << bank << endl;
-			win = 1;
+			win.push_back(1);
 		}
 
 		if (spin1 == spin2 && spin2 == spin3 && spin3 == spin4) {
-			cashAdded = cashVals[diff - 1] * 27;
-			bank += cashAdded;
-			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(2);
 		}
 
 		if (spin1 == spin2 && spin2 == spin3 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 27;
-			bank += cashAdded;
-			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(2);
 		}
 
 		if (spin1 == spin2 && spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 27;
-			bank += cashAdded;
-			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(2);
 		}
 
 		if (spin2 == spin3 && spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 27;
-			bank += cashAdded;
-			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(2);
 		}
 
 		if (spin1 == spin2 && spin2 == spin3) {
-			cashAdded = cashVals[diff - 1] * 9;
-			bank += cashAdded;
-			cout << "\tYou matched 2 pairs. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(3);
 		}
 
 		if (spin2 == spin3 && spin3 == spin4) {
-			cashAdded = cashVals[diff - 1] * 9;
-			bank += cashAdded;
-			cout << "\tYou matched 2 pairs. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(3);
 		}
 
 		if (spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 9;
-			bank += cashAdded;
-			cout << "\tYou matched 2 pairs. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(3);
 		}
 
 		if (spin1 == spin2) {
-			cashAdded = cashVals[diff - 1] * 3;
-			bank += cashAdded;
-			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(4);
 		}
 
 		if (spin2 == spin3) {
-			cashAdded = cashVals[diff - 1] * 3;
-			bank += cashAdded;
-			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(4);
 		}
 
 		if (spin3 == spin4) {
-			cashAdded = cashVals[diff - 1] * 3;
-			bank += cashAdded;
-			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
+			win.push_back(4);
 		}
 
 		if (spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 3;
-			bank += cashAdded;
-			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
-			cout << " You now have $" << bank << endl;
-			win = 1;
-			
+			win.push_back(4);
 		}
-
-		if (bank > 0 && win == 0) {
-			cashAdded = cashVals[diff - 1] * -1;
-			bank += cashAdded;
-			cout << "\tYou matched 0 pairs. You lost $" << setprecision(4) << cashAdded * -1 << "!";
-			cout << " You now have $" << setprecision(4) << bank << endl;
-			continue;
+		if (spin1 != spin2 && spin2 != spin3 && spin3 != spin4 && spin4 != spin5) {
+			win.push_back(0);
 		}
+		
+		//for (int a : win)
+		//	cout << a << "\t";
 
-		else {
-			if(win == 0)
-				cout << "\t\tYou matched no pairs. You have $" << bank << endl;
-			continue;
+		double payout = 0;
+
+		for (int a : win) {
+			switch (a) {
+			case 0:
+				cout << "\n\tYou matched no pairs and lost your bet.";
+				payout = cashVals[diff - 1] * -1;
+				bank += payout;
+				cout << " You now have $" << bank << endl;
+				break;
+			case 1:
+				
+				payout = cashVals[diff - 1] * 1000;
+				bank += payout;
+				cout << "\n\tJackpot! You earned $" << payout << "! You now have $" << bank;
+				break;
+			case 2:
+				payout = cashVals[diff - 1] * 100;
+				bank += payout;
+				cout << "\n\tYou matched 3 pairs! You earned $" << payout << "! You now have $" << bank;
+				break;
+			case 3:
+				payout = cashVals[diff - 1] * 10;
+				bank += payout;
+				cout << "\n\tYou matched 2 pairs. You earned $" << payout << "! You now have $" << bank;
+				break;
+			case 4:
+				payout = cashVals[diff - 1] * 4;
+				bank += payout;
+				cout << "\n\tYou matched 1 pair. You earned $" << payout << "! You now have $" << bank;
+				break;
+			default:
+				cout << "\n\tYou matched no pairs and lost your bet.";
+				payout = cashVals[diff - 1] * -1;
+				bank += payout;
+				cout << " You now have $" << bank << endl;
+				break;
+			}
 		}
-
-
+		if (bank <= 0)
+			break;
 	}
-
 }
+
 
 int getUserInput() {
 	char ch;
