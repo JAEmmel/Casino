@@ -13,11 +13,17 @@ int getBet();
 void showBoard();
 int getDifficulty();
 int getUserInput();
+void playKeno();
 
 double bank = 50;
 
 int main()
 {
+	playKeno;
+	system("pause");
+}
+
+void playKeno() {
 	cout << "Keno is a game of chance, after you place a bet you pick numbers from the interval 1-100.\nNext, the computer randomly picks the same amount of numbers you are paid\nout based on how many numbers are the same between you and the computer.\n\n";
 	int bet = 0;
 	while (bet != -1 && bank > 0) {
@@ -30,7 +36,6 @@ int main()
 		if (money < 0)
 			cout << "\nYou lost $" << money << " You now have $" << bank << endl;
 	}
-	system("pause");
 }
 
 double pickNumbers(int num, double bet) {
