@@ -7,6 +7,7 @@
 
 int getBet();
 void spinWheel(int diff, int loop);
+void playSlots();
 
 using namespace std;
 
@@ -14,6 +15,11 @@ double bank = 50;
 
 int main()
 {
+	playSlots();
+	system("pause");
+}
+
+void playSlots() {
 	int cash = bank;
 	srand(time(0));
 	int bet = getBet();
@@ -23,7 +29,6 @@ int main()
 		cout << " You earned $" << setprecision(4) << bank - cash << "!\n";
 	else
 		cout << " You lost $" << setprecision(4) << cash - bank << ".\n";
-	system("pause");
 }
 
 int getBet()
@@ -76,103 +81,106 @@ void spinWheel(int diff, int loop)
 
 		double cashAdded = 0;
 
+		int win = 0;
+
 		if (spin1 == spin2 && spin2 == spin3 && spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 81;
 			bank += cashAdded;
 			cout << "\t\t\tJackpot!\n You matched 4 pairs! You earned $" << setprecision(2) << cashAdded << "!";
 			cout << "\t\t\t\t\tYou now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin1 == spin2 && spin2 == spin3 && spin3 == spin4) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 27;
 			bank += cashAdded;
 			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin1 == spin2 && spin2 == spin3 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 27;
 			bank += cashAdded;
 			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin1 == spin2 && spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 27;
 			bank += cashAdded;
 			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin2 == spin3 && spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 27;
 			bank += cashAdded;
 			cout << "\tYou matched 3 pairs. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin1 == spin2 && spin2 == spin3) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 9;
 			bank += cashAdded;
 			cout << "\tYou matched 2 pairs. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin2 == spin3 && spin3 == spin4) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 9;
 			bank += cashAdded;
 			cout << "\tYou matched 2 pairs. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin3 == spin4 && spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 2 * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 9;
 			bank += cashAdded;
 			cout << "\tYou matched 2 pairs. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin1 == spin2) {
-			cashAdded = cashVals[diff - 1] * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 3;
 			bank += cashAdded;
 			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin2 == spin3) {
-			cashAdded = cashVals[diff - 1] * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 3;
 			bank += cashAdded;
 			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin3 == spin4) {
-			cashAdded = cashVals[diff - 1] * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 3;
 			bank += cashAdded;
 			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
 		}
 
 		if (spin4 == spin5) {
-			cashAdded = cashVals[diff - 1] * 2 * 2;
+			cashAdded = cashVals[diff - 1] * 3;
 			bank += cashAdded;
 			cout << "\tYou matched 1 pair. You earned $" << cashAdded << "!";
 			cout << " You now have $" << bank << endl;
-			continue;
+			win = 1;
+			
 		}
 
-		if (bank > 0) {
+		if (bank > 0 && win == 0) {
 			cashAdded = cashVals[diff - 1] * -1;
 			bank += cashAdded;
 			cout << "\tYou matched 0 pairs. You lost $" << setprecision(4) << cashAdded * -1 << "!";
@@ -181,10 +189,11 @@ void spinWheel(int diff, int loop)
 		}
 
 		else {
-			cout << "\t\tYou matched no pairs. You have $" << bank << endl;
+			if(win == 0)
+				cout << "\t\tYou matched no pairs. You have $" << bank << endl;
 			continue;
 		}
-		
+
 
 	}
 
